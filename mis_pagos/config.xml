@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<module>
+	<name>mispagos</name>
+	<displayName><![CDATA[Mis Pagos]]></displayName>
+	<version><![CDATA[1.7.2]]></version>
+	<description><![CDATA[Modulo para que las representantes verifiquen sus pagos]]></description>
+	<author><![CDATA[Corcaribe Tecnología C.A]]></author>
+	<tab><![CDATA[front_office_features]]></tab>
+	<is_configurable>1</is_configurable>
+	<need_instance>1</need_instance>
+</module>

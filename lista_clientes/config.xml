@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<module>
+	<name>mimodulo</name>
+	<displayName><![CDATA[Indicar Amiga]]></displayName>
+	<version><![CDATA[1.7.2]]></version>
+	<description><![CDATA[indicar una amiga representante]]></description>
+	<author><![CDATA[nele]]></author>
+	<tab><![CDATA[front_office_features]]></tab>
+	<is_configurable>1</is_configurable>
+	<need_instance>1</need_instance>
+</module>

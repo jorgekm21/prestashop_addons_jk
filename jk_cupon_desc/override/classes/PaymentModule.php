@@ -76,33 +76,33 @@ class PaymentModule extends PaymentModuleCore
                 }
             }
             
-            if (count($cliente_con_cupon['cupon_code']) > 0) {
+            if (count($cliente_con_cupon[0]['cupon_code'] == 0)) {
                 Db::getInstance()->execute('
                 insert into '._DB_PREFIX_.'cupones_desc (user_id, cupon_code, cupon_amount, cupon_date, operation_type)
                 values ('. $id_comprador .', '. $cupon .', '. $monto .', CURRENT_DATE, ' . $operacion .')
-            ');
+                ');
 
-            if ($operacion == 1) {
-                $operacion_txt = '%';
-            } else {
-                $operacion_txt = 'USD';
-            }
+                if ($operacion == 1) {
+                    $operacion_txt = '%';
+                } else {
+                    $operacion_txt = 'USD';
+                }
 
 
-            # Correo que envia el cupon
-            Mail::Send(
-                (int)(Configuration::get('PS_LANG_DEFAULT')), // defaut language id
-                'contact', // email template file to be use
-                'Gastos en Tienda', // email subject
-                array(
-                    '{email}' => Configuration::get('PS_SHOP_EMAIL'), // sender email address
-                    '{message}' => 'Usted ha ganado un cupon gracias a su ultima compra por un valor de ' . $monto . $operacion_txt . ' aplicable a su proxima compra. El codigo de su cupon es: ' . $cupon // email content
-                ),
-                Configuration::get('PS_SHOP_EMAIL'), // receiver email address
-                $correo_customer, //receiver name
-                NULL, //from email address
-                NULL
-            );
+                # Correo que envia el cupon
+                Mail::Send(
+                    (int)(Configuration::get('PS_LANG_DEFAULT')), // defaut language id
+                    'contact', // email template file to be use
+                    'Gastos en Tienda', // email subject
+                    array(
+                        '{email}' => Configuration::get('PS_SHOP_EMAIL'), // sender email address
+                        '{message}' => 'Usted ha ganado un cupon gracias a su ultima compra por un valor de ' . $monto . $operacion_txt . ' aplicable a su proxima compra. El codigo de su cupon es: ' . $cupon // email content
+                    ),
+                    Configuration::get('PS_SHOP_EMAIL'), // receiver email address
+                    $correo_customer, //receiver name
+                    NULL, //from email address
+                    NULL
+                );
             }
 
         }

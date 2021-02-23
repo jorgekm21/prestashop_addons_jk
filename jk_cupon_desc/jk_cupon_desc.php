@@ -51,7 +51,7 @@ class Jk_Cupon_Desc extends Module
 
     public function install()
     {
-        if (!parent::install() || !Configuration::updateValue('JK_RECURRENCIA', '0') || !Configuration::updateValue('JK_TIPO_IMPORTE', '') || !Configuration::updateValue('JK_IMPORTE', '0') || !$this->install_db())
+        if (!parent::install() || !Configuration::updateValue('JK_RECURRENCIA', '0') || !Configuration::updateValue('JK_TIPO_IMPORTE', '') || !Configuration::updateValue('JK_IMPORTE', '0') || !$this->install_db() || !$this->registerhook('displayOrderConfirmation1'))
         {
             return false;
         }
@@ -61,7 +61,7 @@ class Jk_Cupon_Desc extends Module
 
     public function uninstall()
     {
-        if (!parent::uninstall() || !$this->uninstall_db()) {
+        if (!parent::uninstall() || !$this->uninstall_db() || !$this->unregisterhook('displayOrderConfirmation1')) {
             return false;
         }
 
@@ -216,6 +216,41 @@ class Jk_Cupon_Desc extends Module
                 return $this->displayConfirmation($this->l('Actualizacion Exitosa'));
             }
         }
+        
     }
+
+    public function hookdisplayOrderConfirmation1($params)
+        {
+            $id_order = (int) Tools::getValue('id_order');
+            $order = new Order($id_order);
+
+            $customer = $order->id_customer;
+
+            $cupon = Db::getInstance()->executeS('
+                select cupon_code, cupon_amount, operation_type
+                from '._DB_PREFIX_.'cupones_desc
+                where user_id = '.$customer.';
+            ');
+
+            $operacion = $cupon[0]['operation_type'];
+
+            $cupon_txt = '';
+
+            if ($operacion == 1) {
+                $cupon_txt = '%';
+            } elseif ($operacion == 2) {
+                $cupon_txt = 'USD';
+            }
+
+            $this->context->smarty->assign(array(
+                'id_orden' => $id_order,
+                'id_customer' => $order->id_customer,
+                'codigo_cupon' => $cupon[0]['cupon_code'],
+                'monto_cupon' => $cupon[0]['cupon_amount'],
+                'operacion' => $cupon_txt,
+            ));
+
+            return $this->display(__FILE__, 'views/templates/hook/orderdetail.tpl');
+        }
 
 }

@@ -1,0 +1,131 @@
+.carta{
+	border: 6px dashed;
+	background:linear-gradient(darkred, red, darkred);
+}
+.img-win{
+	width: 300px;
+	height: 150px;
+	background-color: rgba(221, 221, 221, 0);
+	display: block;
+	margin: auto;
+}
+.imgwin{
+	width: 100%;
+	height: 100%;
+}
+/* .valido text{
+	position: absolute;
+	bottom: 0;
+	right: 0;
+} */
+.porcentaje{
+	font-size: 80px;
+	margin-top: -25%;
+	font-weight: 800;
+	background: linear-gradient(purple, pink, black);
+	-webkit-background-clip: text;
+   -webkit-text-fill-color: transparent;
+   /* text-shadow: 2px 3px 2px yellow; */
+}
+.texto{
+	font-size: 16px;
+	color: black;
+	font-weight: 600;
+	/* margin-right: 100%; */
+	position: absolute;
+	bottom: 0;
+	right: 0;
+}
+.porcentaje2{
+	font-size: 80px;
+	font-weight: 800;
+	background: linear-gradient(purple, pink, black);
+	-webkit-background-clip: text;
+   -webkit-text-fill-color: transparent;
+   position: absolute;
+	bottom: 0;
+	right: 0;
+}
+
+article li{
+   color: #444;
+   font-size: 15px;
+   margin-left: 33px;
+   line-height: 1.5;
+   padding: 5px;
+}
+article h1,
+article h2,
+article h3,
+article h4,
+article p{
+   padding: 14px;
+   color: #333;
+}
+article p{
+   font-size: 15px;
+    line-height: 1.5;
+}
+
+.set-overlayer,
+.set-glass,
+.set-sticky {
+	cursor: pointer;
+	height: 45px;
+	line-height: 45px;
+	padding: 0 15px;
+	color: #333;
+	font-size: 16px;
+}
+.set-overlayer:after,
+.set-glass:after,
+.to-active:after,
+.set-sticky:after {
+	font-family: FontAwesome;
+	font-size: 18pt;
+	position: relative;
+	float: right;
+}
+.set-overlayer:after,
+.set-glass:after,
+.set-sticky:after {
+	content: "\f204";
+	transition: .6s;
+}
+
+.to-active:after {
+	content: "\f205";
+	color: #008080;
+	transition: .6s;
+}
+.set-overlayer,
+.set-glass,
+.set-sticky,
+.source,
+.theme-tray {
+	margin: 10px;
+	background: #f2f2f2;
+	border-radius: 5px;
+	border: 2px solid #f1f1f1;
+	box-sizing: border-box;
+}
+/* Syntax Highlighter*/
+
+pre.prettyprint {
+	padding: 15px !important;
+   margin: 10px;
+	border: 0 !important;
+  background: #f2f2f2;
+  overflow: auto;
+}
+
+.source {
+	white-space: pre;
+	overflow: auto;
+	max-height: 400px;
+}
+code{
+    border:1px solid #ddd;
+    padding: 2px;
+    border-radius: 2px;
+}

@@ -51,7 +51,7 @@ class Jk_Cupon_Desc extends Module
 
     public function install()
     {
-        if (!parent::install() || !Configuration::updateValue('JK_RECURRENCIA', '0') || !Configuration::updateValue('JK_TIPO_IMPORTE', '') || !Configuration::updateValue('JK_IMPORTE', '0') || !$this->install_db() || !$this->registerhook('displayOrderConfirmation1'))
+        if (!parent::install() || !Configuration::updateValue('JK_RECURRENCIA', '0') || !Configuration::updateValue('JK_TIPO_IMPORTE', '') || !Configuration::updateValue('JK_IMPORTE', '0') || !$this->install_db() || !$this->registerhook('ActionFrontControllerSetMedia') || !$this->registerhook('displayOrderConfirmation1'))
         {
             return false;
         }
@@ -107,7 +107,7 @@ class Jk_Cupon_Desc extends Module
             'input' => [
                 [
                     'type' => 'text',
-                    'label' => $this->l('Recurrencia'),
+                    'label' => $this->l('Importe Descuento'),
                     'name' => 'recurrencia',
                     'size' => 20,
                 ],
@@ -134,7 +134,7 @@ class Jk_Cupon_Desc extends Module
                 ],
                 [
                     'type' => 'text',
-                    'label' => $this->l('Importe'),
+                    'label' => $this->l('Importe Generar'),
                     'name' => 'importe',
                     'size' => 20,
                 ]
@@ -219,6 +219,27 @@ class Jk_Cupon_Desc extends Module
         
     }
 
+    public function hookActionFrontControllerSetMedia($params)
+{
+        $this->context->controller->registerStylesheet(
+            'module-modulename-style',
+            'modules/'.$this->name.'/css/cupon.css',
+            [
+              'media' => 'all',
+              'priority' => 200,
+            ]
+        );
+
+        $this->context->controller->registerJavascript(
+            'module-modulename-simple-lib',
+            'modules/'.$this->name.'/js/cupon.js',
+            [
+              'priority' => 200,
+              'attribute' => 'async',
+            ]
+        );
+    }
+
     public function hookdisplayOrderConfirmation1($params)
         {
             $id_order = (int) Tools::getValue('id_order');
@@ -241,6 +262,9 @@ class Jk_Cupon_Desc extends Module
             } elseif ($operacion == 2) {
                 $cupon_txt = 'USD';
             }
+
+            $this->context->controller->addJS($this->_path.'views/js/cupon.js');
+            $this->context->controller->addCSS($this->_path.'views/css/cupon.css');
 
             $this->context->smarty->assign(array(
                 'id_orden' => $id_order,

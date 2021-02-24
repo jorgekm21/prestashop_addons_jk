@@ -75,8 +75,11 @@ class PaymentModule extends PaymentModuleCore
                     $cupon = rand(100001, 999999);
                 }
             }
+
+            PrestaShopLogger::addLog('Merece Cupon', 1, null, 'Cart', (int) $id_cart, true);
+            PrestaShopLogger::addLog('Cuenta Cupones: ' . count($cliente_con_cupon[0]['cupon_code']), 1, null, 'Cart', (int) $id_cart, true);
             
-            if (count($cliente_con_cupon[0]['cupon_code'] == 0)) {
+            if (count($cliente_con_cupon[0]['cupon_code']) == 0) {
                 Db::getInstance()->execute('
                 insert into '._DB_PREFIX_.'cupones_desc (user_id, cupon_code, cupon_amount, cupon_date, operation_type)
                 values ('. $id_comprador .', '. $cupon .', '. $monto .', CURRENT_DATE, ' . $operacion .')

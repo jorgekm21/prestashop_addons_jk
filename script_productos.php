@@ -29,21 +29,20 @@ function loadProductsPost() {
         'skip' => '1',
         'csv' => 'productos.csv',
         'entity' => '1',
-        'separator' => ';',
-        'multiple_value_separator' => ',',
+        'separator' => ',',
+        'multiple_value_separator' => ';',
         'iso_lang' => 'es',
         'convert' => '',
-        'import' => 'Importar datos csv',
         'type_value' => array(
-            0 => 'category', //
-            1 => 'price_tex', //
-            2 => 'id_tax_rules_group', //
-            3 => 'on_sale', //
-            4 => 'reference', //
-            5 => 'ean13', //
-            6 => 'quantity', //
-            7 => 'description', //
-            8 => 'manufacturer', //
+            0 => 'name',
+            1 => 'reference',
+            2 => 'ean13',
+            3 => 'no',
+            4 => 'no',
+            5 => 'no',
+            6 => 'quantity',
+            7 => 'category',
+            8 => 'no',
 
 
         ),

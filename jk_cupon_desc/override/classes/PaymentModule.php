@@ -36,7 +36,7 @@ class PaymentModule extends PaymentModuleCore
         $correo_comprador = Db::getInstance()->executeS('
             select distinct '._DB_PREFIX_.'customer.email as correo, '._DB_PREFIX_.'customer.id_customer as id
             from '._DB_PREFIX_.'cart, '._DB_PREFIX_.'orders, '._DB_PREFIX_.'customer
-            where '._DB_PREFIX_.'cart.id_customer = '._DB_PREFIX_.'orders.id_customer and '._DB_PREFIX_.'cart.id_cart = 10 and '._DB_PREFIX_.'cart.id_customer = '._DB_PREFIX_.'customer.id_customer and '._DB_PREFIX_.'orders.id_customer = '._DB_PREFIX_.'customer.id_customer 
+            where '._DB_PREFIX_.'cart.id_customer = '._DB_PREFIX_.'orders.id_customer and '._DB_PREFIX_.'cart.id_cart = '.$id_cart.' and '._DB_PREFIX_.'cart.id_customer = '._DB_PREFIX_.'customer.id_customer and '._DB_PREFIX_.'orders.id_customer = '._DB_PREFIX_.'customer.id_customer 
         ');
 
         $acumulado_total = $total_compras[0]['monto'];
@@ -68,18 +68,19 @@ class PaymentModule extends PaymentModuleCore
             # Detector de cupones otorgados
 
             $cliente_con_cupon = Db::getInstance()->executeS('
-                select cupon_code from '._DB_PREFIX_.'cupones_desc where '._DB_PREFIX_.'cupones_desc.user_id = '.$id_comprador.' ');
+                select count(cupon_code) as total from '._DB_PREFIX_.'cupones_desc where '._DB_PREFIX_.'cupones_desc.user_id = '.$id_comprador.' ');
 
-            foreach ($cliente_con_cupon['cupon_code'] as $key) {
-                while ($key == $cupon) {
+            if ($cliente_con_cupon[0]['total'] == 0)
+            {
+                $lista_cupones = Db::getInstance()->executeS('
+                    select cupon_code as cupon from '._DB_PREFIX_.'cupones_desc');
+
+                do {
                     $cupon = rand(100001, 999999);
-                }
-            }
+                } while (in_array($cupon, $lista_cupones['cupon']));
 
-            PrestaShopLogger::addLog('Merece Cupon', 1, null, 'Cart', (int) $id_cart, true);
-            PrestaShopLogger::addLog('Cuenta Cupones: ' . count($cliente_con_cupon[0]['cupon_code']), 1, null, 'Cart', (int) $id_cart, true);
-            
-            if (count($cliente_con_cupon[0]['cupon_code']) == 0) {
+                PrestaShopLogger::addLog('Merece Cupon', 1, null, 'Cart', (int) $id_cart, true);
+
                 Db::getInstance()->execute('
                 insert into '._DB_PREFIX_.'cupones_desc (user_id, cupon_code, cupon_amount, cupon_date, operation_type)
                 values ('. $id_comprador .', '. $cupon .', '. $monto .', CURRENT_DATE, ' . $operacion .')
@@ -106,6 +107,9 @@ class PaymentModule extends PaymentModuleCore
                     NULL, //from email address
                     NULL
                 );
+
+            } else {
+                PrestaShopLogger::addLog('No Merece Cupon', 1, null, 'Cart', (int) $id_cart, true);
             }
 
         }

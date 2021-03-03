@@ -30,6 +30,7 @@
     }
 </style>
 
+{if $monto_cupon}
 <div class="card">
     <div class="container">
         <h3 class="h1 card-title">CUPON DE PREMIO</h3>
@@ -37,7 +38,7 @@
             <article>
                 <div class="carta">
                     <div class="img-win">
-                        <img class="imgwin" src="https://drive.google.com/file/d/1NuQL3kSQ5-y_M2b2tCuK8Nu6jcNpd5rA/view?usp=sharing" alt="Error al cargar la imagen">
+                        <img class="imgwin" src={$shop.logo} alt="Error al cargar la imagen">
                     </div>
                     <div class="valido">
                         <p class="porcentaje">{$monto_cupon}{$operacion}</p>
@@ -51,3 +52,4 @@
         </main>
     </div>
 </div>
+{/if}
